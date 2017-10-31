@@ -1,0 +1,35 @@
+<html>
+<body>
+    {% block title %}
+    <h3>Header goes here.</h3>
+    {% endblock %}
+
+
+
+    {% block content %}
+    <h2>Recent blogs:</h2>
+
+        {% for blog in latest_articles %}
+          <div><em>{{forloop.counter}}. </em> <a href="{% url "blog:blogsview" myid=blog.id %}">{{blog}}</a></div>
+        {% endfor %}
+
+    <h2>Number of blogs: {{blog_count}}</h2>
+    <h2>Number of posts: {{post_count}}</h2>
+    <h2>Number of comments: {{comment_count}}</h2>
+
+    <h2><a href="{% url "blog:blogspage" %}">View all blogs</a></h2>
+    <h2><a href="{% url "blog:post_creation" %}">Create Post</a> </h2>
+    <h2>
+
+       .
+    </h2>
+    <h2><a href="{% url 'login'%}?next={{request.path}}">Login</a></h2>
+    <h2><a href="{% url "signup:signup" %}">Sign up</a></h2>
+
+
+
+    {% endblock%}
+
+    <footer>Copyright footer.</footer>
+</body>
+</html>

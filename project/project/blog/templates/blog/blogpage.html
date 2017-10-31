@@ -1,0 +1,18 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+
+Blogs page <p></p>
+
+{% endblock %}
+
+{% block content %}
+    {% for blog in object_list %}
+    <div>
+        <em>{{forloop.counter}}. </em><a href="{% url "blog:blogsview" myid=blog.id %}">{{blog.name}}</a>
+    </div>
+    {% endfor %}
+
+<h3><a href="{% url "core:mainpg"  %}">Back</a></h3>
+{% endblock %}
+

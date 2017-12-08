@@ -1,0 +1,48 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block extra %}
+    <link href="{% static "post/postpage.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <article>
+
+    {% if user == post.author %}
+    <ul class="nav nav-pills">
+      <li role="presentation" class="active"><a href="{% url "blog:editpost" pk=post.id %}">Edit this post</a></li>
+        <li role="presentation" class="active"><a href="{% url "blog:oneblog" pk=post.blog.id %}">Back</a></li>
+
+
+
+    </ul>
+
+    {% endif %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4>{{ post.title }}</h4><p class="text-left">{{ post.created_at }}</p></div>
+            <div class="panel-body postdiv">
+               {{ post.content }}
+            </div>
+    </div>
+    {% if user.is_authenticated %}
+    <ul class="nav nav-pills">
+      <li role="presentation" class="active"><a href="{% url "post:createcomment" pk=post.id %}">New comment</a></li>
+           <li role="presentation" class="btn btn-primary likebutton" data-url={% url "blog:likepost" pk=post.id %}>Like</li>
+    </ul>
+    <div class="well well-sm">Likes: <div class="countlikes">{{post.like_set.count}} </div></div>
+
+    {% endif %}
+
+        <a href="" class="testingdialog">dontpressme</a>
+    <div class="list-group">
+            <a href="" class="list-group-item active">
+                List of comments:
+            </a>
+            <div class="commentsdiv" data-url="{% url "blog:comments" pk=post.id %}">
+            </div>
+    </div>
+
+    </article>
+{% endblock %}
+

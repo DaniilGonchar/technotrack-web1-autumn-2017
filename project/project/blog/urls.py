@@ -1,13 +1,20 @@
 from django.conf.urls import url
-from blog.views import *
+from .views import *
+from post.views import CommentView,PostCommentView
+from django.contrib.auth.decorators import login_required
+
 
 urlpatterns = [
-    url(r'^$', BlogList.as_view(), name='blogspage'),
-    url(r'^(?P<myid>\d+)$', posts_list, name='blogsview'),
-    url(r'^(?P<myidd>\d+)/(?P<myid>\d+)$', post_page, name='onepost'),
-    url(r'^(?P<myidd>\d+)/(?P<pk>\d+)/edit/$', Post_Edit.as_view(), name='post_edit'),
-    url(r'^(?P<myidd>\d+)/(?P<pk>\d+)/edit_comment/$', Comment_Edit.as_view(), name='comment_edit'),
-
-    url(r'^new/$', login_required(New_Post.as_view()), name="post_creation"),
-
+    url(r'^$', BlogList.as_view(),name="allblogs"),
+    url(r'^blog/(?P<pk>\d+)/$', BlogView.as_view(),name="oneblog"),
+    url(r'^blog/(?P<pk>\d+)/edit/$', EditBlog.as_view(),name="editblog"),
+    url(r'^create/$', login_required(AddBlog.as_view()),name="createblog"),
+    url(r'^post/(?P<pk>\d+)/$', CommentView.as_view(), name="post_page"),
+    url(r'^post/(?P<pk>\d+)/like$', likepost, name="likepost"),
+    url(r'^post/(?P<pk>\d+)/countlike$', countlikes, name="countlikes"),
+    url(r'^post/(?P<pk>\d+)/comments/$', PostCommentView.as_view(), name="comments"),
+    url(r'^blog/(?P<pk>\d+)/edit/post/$', EditPost.as_view(), name="editpost"),
+    url(r'^addpost/$', login_required(AddPost.as_view()), name="createpost"),
+    url(r'^addpostmodal/$', login_required(CreatePost.as_view()), name="addpostmodal"),
+    url(r'^(?P<pk>\d+)/addpost/$', login_required(AddPostFromBlog.as_view()), name="createpostfromblog"),
 ]

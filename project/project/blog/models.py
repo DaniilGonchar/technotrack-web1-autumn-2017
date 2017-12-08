@@ -6,26 +6,63 @@ from django.conf import settings
 
 
 # Create your models here.
-class Post(models.Model):
-    postname = models.CharField(max_length=255)
-    text = models.TextField()
-    createdata = models.DateTimeField(auto_now_add=True)
-    changedata = models.DateTimeField(auto_now=True)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)
-    blog = models.ForeignKey('blog.Blog', related_name='posts')
+
+class BlogQuerySet(models.QuerySet):
+    def get_blogs(self, user):
+        qs = Post.objects
+        if user is not None:
+            qs = qs.filter(Post.Q(author=user)
+                           | Post.Q(is_published=True))
+            return qs
+
+
+class PostQuerySet(models.QuerySet):
+    def active_posts(self, user):
+        if user is None or user.is_anonymous():
+            self = self.filter(is_published=True)
+        else:
+            self = self.filter(models.Q(author=user) | models.Q(is_published=True))
+
+        return self
+
+
+class Category(models.Model):
+    title = models.CharField(max_length=50)
 
     def __str__(self):
-        return u'{} ({}) {}'.format(self.postname, self.author, self.text)
+        return self.title
 
 
 class Blog(models.Model):
-    name = models.CharField(max_length=255)
-    createdata = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    caption = models.CharField(max_length=50)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    category = models.ManyToManyField(Category)
+
+    objects = BlogQuerySet.as_manager()
 
     def __str__(self):
-        return self.name
+        return self.caption
 
 
+class Post(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    content = models.TextField()
+    blog = models.ForeignKey(Blog)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    title = models.CharField(max_length=50, default="NameOfPost")
+    is_published = models.BooleanField(default=True)
+
+    objects = PostQuerySet.as_manager()
+
+    def __str__(self):
+        return self.title
 
 
+class Like(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    created_at = models.DateTimeField(auto_now_add=True)
+    post = models.ForeignKey(Post)

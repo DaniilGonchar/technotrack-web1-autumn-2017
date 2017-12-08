@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+    <article>
+    <form method="post">
+    {% csrf_token %}
+    <div class="panel panel-primary">
+          <div class="panel-heading">Create new comment</div>
+          <div class="panel-body">
+            {{ form.errors }}
+            {% for field in form %}
+                    <div>{{ field.label }}:{{ field|add_class:"form-control" }}</div>
+                {% endfor %}
+            <input type="submit">
+          </div>
+    </div>
+    </form>
+    </article>
+{% endblock %}
+

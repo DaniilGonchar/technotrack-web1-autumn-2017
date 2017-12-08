@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+# Update database configuration with $DATABASE_URL.
+import dj_database_url
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
+
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,7 +35,7 @@ ALLOWED_HOSTS = []
 
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/'
+# LOGIN_REDIRECT_URL = '/'
 
 
 # Application definition
@@ -41,19 +47,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
-    'blog',
-    'comments',
-
-
-
+    'debug_toolbar',
+    'core.apps.CoreConfig',
+    'blog.apps.BlogConfig',
+    'post.apps.PostConfig',
+    'crispy_forms',
+    'widget_tweaks',
 ]
 
 MEDIA_URL = '/home/comandante/Documents/technotrack-web1-autumn-2017/project/media/'
 MEDIA_ROOT = '/home/comandante/Documents/technotrack-web1-autumn-2017/project/media/'
 
 
-AUTH_USER_MODEL = 'core.User'
+# AUTH_USER_MODEL = 'core.User'
 
 
 MIDDLEWARE = [
@@ -64,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
 
 ROOT_URLCONF = 'application.urls'
@@ -93,7 +100,7 @@ WSGI_APPLICATION = 'application.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'baseformigration',
+        'NAME': 'baseFinal',
         'USER': 'comandante',
         'PASSWORD': ' ',
         'HOST': 'localhost',
@@ -139,3 +146,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, '../collected_static')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, '../src/blog/static'), os.path.join(BASE_DIR, '../src/core/static'), os.path.join(BASE_DIR, '../src/post/static'), )
+
+
+AUTH_USER_MODEL = 'core.User'
+
+LOGIN_URL = 'core:login'
+LOGIN_REDIRECT_URL = 'core:home'
+LOGOUT_REDIRECT_URL = 'core:home'
+

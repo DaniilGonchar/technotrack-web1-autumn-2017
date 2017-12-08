@@ -1,0 +1,47 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block extra %}
+    <link href="{% static "blog/blogpage.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <article>
+    {% if user == blog.author %}
+    <ul class="nav nav-pills">
+      <li role="presentation" class="active"><a href="{% url "blog:editblog" pk=blog.id %}">Edit this blog</a></li>
+        <li role="presentation" class="active"><a href="{% url "blog:createpostfromblog" pk=blog.id %}">Create new post</a></li>
+
+        <li role="presentation" class="active"><a href="{% url "blog:allblogs" %}">Back</a></li>
+    </ul>
+    {% endif %}
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3>{{ blog.caption }}</h3><p class="text-left">{{ blog.author }}</p><p class="text-left">{{ blog.created_at }}</p></div>
+            <div class="panel-body">
+               {{ blog.content }}
+            </div>
+    </div>
+    <div class="well well-sm">
+    <p>Сategories:</p>
+    {% for category in blog.category.all %}
+            <b>{{ category }}</b>
+    {% endfor %}
+    </div>
+
+    {% if object.post_set %}
+        <ul class="list-group">
+        <div class="list-group">
+            <a href="#" class="list-group-item active">
+                List of posts:
+            </a>
+            {% for post in post_list %}
+                <div class="blogdiv"><a href={% url "blog:post_page" pk=post.id %} class="list-group-item">{{ post.title }}</a></div>
+                <div>{% if user == blog.author %}<li class="list-group-item blogstring"><a href={% url "blog:editpost" pk=post.id %}>Edit</a></li>{% endif %}</div>
+            {% endfor %}
+
+            <div class="clearfix"></div>
+        </div>
+        </ul>
+    {% endif %}
+    </article>
+{% endblock %}

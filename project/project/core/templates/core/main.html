@@ -1,0 +1,20 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+    <article>
+    <div class="page-header">
+        <h1>Main page <small>of our website</small></h1>
+    </div>
+    <div class="jumbotron">
+          <h2>Main page contents</h2>
+          <p>
+              <div>Blogs:<span class="badge">{{ blogs_count }}</span></div>
+                <div>Posts:<span class="badge">{{ posts_count }}</span></div>
+                <div>Comments:<span class="badge">{{ comment_count }}</span></div>
+          </p>
+          <p><a class="btn btn-primary btn-lg" href="{% url "blog:allblogs" %}" role="button">View all blogs</a></p>
+    </div>
+    </article>
+{% endblock %}
+
+

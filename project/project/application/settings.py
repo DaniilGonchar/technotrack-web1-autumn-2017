@@ -30,7 +30,7 @@ SECRET_KEY = 'pe4zu4psp7gnh50_3w69kzqvttfb0+87h#qz^wfhl3c@3ybbm&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://peaceful-wildwood-68682.herokuapp.com']
 
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
@@ -104,11 +104,15 @@ DATABASES = {
         # 'PASSWORD': ' ',
         # 'HOST': 'localhost',
 
+
+
     }
+
 }
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
+
 
 
 # Password validation

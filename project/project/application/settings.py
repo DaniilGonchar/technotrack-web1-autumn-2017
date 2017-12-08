@@ -97,14 +97,14 @@ WSGI_APPLICATION = 'application.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'baseFinal',
-    #     'USER': 'comandante',
-    #     'PASSWORD': ' ',
-    #     'HOST': 'localhost',
-    #
-    # }
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'baseFinal',
+        'USER': 'comandante',
+        'PASSWORD': ' ',
+        'HOST': 'localhost',
+
+    }
 }
 
 db_from_env = dj_database_url.config(conn_max_age=500)
